@@ -1,22 +1,22 @@
-const express = require("express");
-const databaseConnect = require("./config/database");
-const cors = require("cors");
-require("dotenv").config();
+import express from "express";
+import dotenv from "dotenv";
+import databaseConnect from "./config/database.js";
+import authRoutes from "./routes/auth.routes.js";
+import cors from "cors";
+import ChatMessage from "./models/ChatMessage.js";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
+dotenv.config();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-// MongoDB Connection
-databaseConnect();
-
-app.get("/", (req, res) => {
-  res.send("<h1>Chat APP</h1>");
-});
+app.use("/api/auth", authRoutes);
 
 app.listen(PORT, () => {
+  // MongoDB Connection
+  databaseConnect();
   console.log(`Server is running on port ${PORT}`);
 });
